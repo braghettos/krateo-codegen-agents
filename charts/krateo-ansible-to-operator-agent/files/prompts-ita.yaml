@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: krateo-ansible-to-operator-agent-prompts-ita
+  namespace: krateo-system
+data:
+  ansible_to_operator_agent: "\n\n## Il tuo repo \u2014 krateo-codegen-agents\n\nSei uno specialista codegen Krateo trasversale. Il sorgente \xE8 `github.com/braghettos/krateo-codegen-agents`.\nUsa gli strumenti github per leggere il codice."

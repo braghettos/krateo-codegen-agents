@@ -1,0 +1,19 @@
+apiVersion: v2
+name: krateo-tf-to-helm-agent
+description: >-
+  Translates Terraform configurations into Helm charts.
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+home: https://krateo.io
+icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg
+keywords:
+  - krateo
+  - platformops
+  - kagent
+  - ai-agent
+  - codegen
+  - terraform
+  - helm
+sources:
+  - https://github.com/braghettos/krateo-codegen-agents

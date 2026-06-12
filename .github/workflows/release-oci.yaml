@@ -1,0 +1,50 @@
+name: Release charts to OCI
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  OCI_REGISTRY: oci://ghcr.io/braghettos/krateo
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.19.0
+
+      - name: Log in to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | \
+            helm registry login ghcr.io \
+              --username "${{ github.actor }}" \
+              --password-stdin
+
+      - name: Package and push charts
+        run: |
+          set -euo pipefail
+          mkdir -p .packaged
+          for dir in charts/*/; do
+            name="$(basename "$dir")"
+            echo "::group::Releasing chart ${name}"
+            if grep -q '^dependencies:' "${dir}Chart.yaml"; then
+              echo "Building dependencies for ${name}"
+              helm dependency update "${dir}"
+            fi
+            helm package "${dir}" --destination .packaged
+            pkg="$(ls .packaged/${name}-*.tgz | head -n1)"
+            echo "Pushing ${pkg} to ${OCI_REGISTRY}"
+            helm push "${pkg}" "${OCI_REGISTRY}"
+            echo "::endgroup::"
+          done

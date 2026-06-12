@@ -1,0 +1,41 @@
+apiVersion: kagent.dev/v1alpha2
+kind: Agent
+metadata:
+  name: krateo-code-analysis-agent
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: krateo-code-analysis-agent
+    app.kubernetes.io/part-of: krateo-codegen-agents
+spec:
+  type: Declarative
+  description: >-
+    Traces Krateo components to their GitHub source repositories, searches code for error patterns, reads source files, and checks recent commits for regressions.
+  declarative:
+    deployment:
+      env:
+{{- include "krateo-code-analysis-agent.genaiEnv" . | nindent 8 }}
+    modelConfig: {{ .Values.modelConfig }}
+    stream: true
+    promptTemplate:
+      dataSources:
+        - kind: ConfigMap
+          name: krateo-code-analysis-agent-prompts-{{ .Values.prompts.language }}
+          alias: prompts
+    systemMessage: |
+      {{`{{include "prompts/code_analysis_agent"}}`}}
+    tools:
+{{- if .Values.github.enabled }}
+      - type: McpServer
+        mcpServer:
+          name: {{ .Values.github.mcpServer }}
+          kind: RemoteMCPServer
+          apiGroup: kagent.dev
+          toolNames:
+            - get_file_contents
+            - search_code
+            - search_repositories
+            - list_commits
+{{- end }}
+    deployment:
+      resources:
+{{- toYaml .Values.resources | nindent 8 }}

@@ -1,0 +1,19 @@
+apiVersion: v2
+name: krateo-ansible-to-operator-agent
+description: >-
+  Converts Ansible playbooks and roles into Kubernetes operators using the Operator SDK Ansible Operator path.
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+home: https://krateo.io
+icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg
+keywords:
+  - krateo
+  - platformops
+  - kagent
+  - ai-agent
+  - codegen
+  - ansible
+  - operator
+sources:
+  - https://github.com/braghettos/krateo-codegen-agents

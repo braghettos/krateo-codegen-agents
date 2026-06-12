@@ -1,0 +1,42 @@
+apiVersion: kagent.dev/v1alpha2
+kind: Agent
+metadata:
+  name: krateo-ansible-to-operator-agent
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: krateo-ansible-to-operator-agent
+    app.kubernetes.io/part-of: krateo-codegen-agents
+spec:
+  type: Declarative
+  description: >-
+    Converts Ansible playbooks and roles into Kubernetes operators using the Operator SDK Ansible Operator path.
+  declarative:
+    deployment:
+      env:
+{{- include "krateo-ansible-to-operator-agent.genaiEnv" . | nindent 8 }}
+    modelConfig: {{ .Values.modelConfig }}
+    stream: true
+    promptTemplate:
+      dataSources:
+        - kind: ConfigMap
+          name: krateo-ansible-to-operator-agent-prompts-{{ .Values.prompts.language }}
+          alias: prompts
+    systemMessage: |
+      {{`{{include "prompts/ansible_to_operator_agent"}}`}}
+    tools:
+{{- if .Values.github.enabled }}
+      - type: McpServer
+        mcpServer:
+          name: {{ .Values.github.mcpServer }}
+          kind: RemoteMCPServer
+          apiGroup: kagent.dev
+          toolNames:
+            - get_file_contents
+            - search_code
+            - search_repositories
+            - create_or_update_file
+            - push_files
+{{- end }}
+    deployment:
+      resources:
+{{- toYaml .Values.resources | nindent 8 }}

@@ -1,0 +1,42 @@
+apiVersion: kagent.dev/v1alpha2
+kind: Agent
+metadata:
+  name: krateo-tf-provider-to-operator-agent
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: krateo-tf-provider-to-operator-agent
+    app.kubernetes.io/part-of: krateo-codegen-agents
+spec:
+  type: Declarative
+  description: >-
+    Translates Terraform providers into Kubernetes operators, or recommends existing ones (ACK, Config Connector, ASO, Crossplane).
+  declarative:
+    deployment:
+      env:
+{{- include "krateo-tf-provider-to-operator-agent.genaiEnv" . | nindent 8 }}
+    modelConfig: {{ .Values.modelConfig }}
+    stream: true
+    promptTemplate:
+      dataSources:
+        - kind: ConfigMap
+          name: krateo-tf-provider-to-operator-agent-prompts-{{ .Values.prompts.language }}
+          alias: prompts
+    systemMessage: |
+      {{`{{include "prompts/tf_provider_to_operator_agent"}}`}}
+    tools:
+{{- if .Values.github.enabled }}
+      - type: McpServer
+        mcpServer:
+          name: {{ .Values.github.mcpServer }}
+          kind: RemoteMCPServer
+          apiGroup: kagent.dev
+          toolNames:
+            - get_file_contents
+            - search_code
+            - search_repositories
+            - create_or_update_file
+            - push_files
+{{- end }}
+    deployment:
+      resources:
+{{- toYaml .Values.resources | nindent 8 }}

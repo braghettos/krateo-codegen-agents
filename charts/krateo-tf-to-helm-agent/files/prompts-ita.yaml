@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: krateo-tf-to-helm-agent-prompts-ita
+  namespace: krateo-system
+data:
+  tf_to_helm_agent: "\n\n## Il tuo repo \u2014 krateo-codegen-agents\n\nSei uno specialista codegen Krateo trasversale. Il sorgente \xE8 `github.com/braghettos/krateo-codegen-agents`.\nUsa gli strumenti github per leggere il codice."

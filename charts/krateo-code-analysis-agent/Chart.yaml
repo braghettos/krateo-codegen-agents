@@ -1,0 +1,18 @@
+apiVersion: v2
+name: krateo-code-analysis-agent
+description: >-
+  Traces Krateo components to their GitHub source repositories, searches code for error patterns, reads source files, and checks recent commits for regressions.
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+home: https://krateo.io
+icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg
+keywords:
+  - krateo
+  - platformops
+  - kagent
+  - ai-agent
+  - codegen
+  - code-analysis
+sources:
+  - https://github.com/braghettos/krateo-codegen-agents

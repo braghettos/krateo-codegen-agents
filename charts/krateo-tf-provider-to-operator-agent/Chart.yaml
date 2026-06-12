@@ -1,0 +1,19 @@
+apiVersion: v2
+name: krateo-tf-provider-to-operator-agent
+description: >-
+  Translates Terraform providers into Kubernetes operators, or recommends existing ones (ACK, Config Connector, ASO, Crossplane).
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+home: https://krateo.io
+icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg
+keywords:
+  - krateo
+  - platformops
+  - kagent
+  - ai-agent
+  - codegen
+  - terraform
+  - operator
+sources:
+  - https://github.com/braghettos/krateo-codegen-agents
