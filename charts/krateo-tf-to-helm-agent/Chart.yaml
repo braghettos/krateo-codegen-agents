@@ -16,4 +16,4 @@ keywords:
   - terraform
   - helm
 sources:
-  - https://github.com/braghettos/krateo-codegen-agents
+  - https://github.com/braghettos/krateo-codegen-agents/tree/SOURCE_REF
