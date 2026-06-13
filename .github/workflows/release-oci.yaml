@@ -42,6 +42,9 @@ jobs:
               echo "Building dependencies for ${name}"
               helm dependency update "${dir}"
             fi
+            # stamp released version + pin sources so each agent tracks/reads this exact release
+            sed -i "s/^appVersion:.*/appVersion: \"${GITHUB_REF_NAME}\"/" "${dir}Chart.yaml"
+            sed -i "s/SOURCE_REF/${GITHUB_REF_NAME}/g" "${dir}Chart.yaml"
             helm package "${dir}" --destination .packaged
             pkg="$(ls .packaged/${name}-*.tgz | head -n1)"
             echo "Pushing ${pkg} to ${OCI_REGISTRY}"
