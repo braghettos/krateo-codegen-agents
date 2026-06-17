@@ -1,0 +1,20 @@
+apiVersion: v2
+name: krateo-docs-agent
+description: >-
+  Reads the official Krateo documentation from GitHub, reconciles it with the braghettos fork's
+  specifics, and keeps the autopilot's grounding source (krateo-autopilot docs/llms.txt) current by
+  opening a pull request — never a direct commit.
+type: application
+version: 0.1.0
+appVersion: CHART_VERSION
+home: https://krateo.io
+icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg
+keywords:
+  - krateo
+  - platformops
+  - kagent
+  - ai-agent
+  - documentation
+  - grounding
+sources:
+  - https://github.com/braghettos/krateo-codegen-agents/tree/SOURCE_REF

@@ -1,6 +1,6 @@
-# The four codegen agents
+# The codegen + knowledge agents
 
-This repo packages four cross-cutting codegen/IaC specialist agents. Each is a
+This repo packages five cross-cutting specialist agents (four codegen/IaC + one docs/grounding). Each is a
 `kagent.dev/v1alpha2` `Agent` (chart `templates/agent.yaml`), with its behaviour spec in
 `charts/<name>/files/prompts-{eng,ita}.yaml` and its model/tools wired in the chart. All four:
 
@@ -14,6 +14,23 @@ This repo packages four cross-cutting codegen/IaC specialist agents. Each is a
 Everything below is grounded in each chart's `templates/agent.yaml` and `files/prompts-eng.yaml`.
 
 ---
+
+## krateo-docs-agent
+
+Keeps Krateo Autopilot's grounding source current from the official docs.
+
+- **Inputs:** a request to refresh/check the autopilot's grounding (optionally a specific topic).
+- **What it does:** reads the official Krateo docs from the `krateoplatformops` org and the current
+  `braghettos/krateo-autopilot` `docs/llms.txt`, **reconciles upstream against the braghettos fork**
+  (upstream wins only where it doesn't contradict the fork — e.g. core-provider is always-on bootstrap,
+  `composableoperations` is an engine-present marker, base install = portal+operations+starter), and
+  proposes the update as a **pull request** to `braghettos/krateo-autopilot` (new branch + PR, never a
+  direct commit — the PR is the human coherence gate).
+- **Outputs:** a PR updating `docs/llms.txt`, summarizing the change and citing its sources.
+- **Tools:** `github-mcp-server` → read (`get_file_contents`, `search_code`, `search_repositories`,
+  `list_commits`) **and** propose (`create_branch`, `create_or_update_file`, `create_pull_request`).
+  Requires the github MCP server running with a PAT scoped to read public repos + open PRs on
+  `braghettos/krateo-autopilot`.
 
 ## krateo-code-analysis-agent
 

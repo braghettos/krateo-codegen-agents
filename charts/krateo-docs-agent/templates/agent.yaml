@@ -1,0 +1,48 @@
+apiVersion: kagent.dev/v1alpha2
+kind: Agent
+metadata:
+  name: krateo-docs-agent
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: krateo-docs-agent
+    app.kubernetes.io/part-of: krateo-codegen-agents
+spec:
+  type: Declarative
+  description: >-
+    Reads the official Krateo documentation from GitHub, reconciles it with the braghettos fork's
+    specifics, and keeps the autopilot's grounding source (krateo-autopilot docs/llms.txt) current
+    by opening a pull request — never a direct commit.
+  declarative:
+    deployment:
+      env:
+{{- include "krateo-docs-agent.genaiEnv" . | nindent 8 }}
+    modelConfig: {{ .Values.modelConfig.name }}
+    stream: true
+    promptTemplate:
+      dataSources:
+        - kind: ConfigMap
+          name: krateo-docs-agent-prompts-{{ .Values.prompts.language }}
+          alias: prompts
+    systemMessage: |
+      {{`{{include "prompts/docs_agent"}}`}}
+    tools:
+{{- if .Values.github.enabled }}
+      - type: McpServer
+        mcpServer:
+          name: {{ .Values.github.mcpServer }}
+          kind: RemoteMCPServer
+          apiGroup: kagent.dev
+          toolNames:
+            # read — discover + read the source docs and the current grounding file
+            - get_file_contents
+            - search_code
+            - search_repositories
+            - list_commits
+            # write — propose the update as a PR (open a branch + PR; never push to a default branch)
+            - create_branch
+            - create_or_update_file
+            - create_pull_request
+{{- end }}
+    deployment:
+      resources:
+{{- toYaml .Values.resources | nindent 8 }}
