@@ -3,7 +3,7 @@ name: krateo-tf-provider-to-operator-agent
 description: >-
   Translates Terraform providers into Kubernetes operators, or recommends existing ones (ACK, Config Connector, ASO, Crossplane).
 type: application
-version: 0.1.2
+version: 0.1.3
 appVersion: CHART_VERSION
 home: https://krateo.io
 icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg

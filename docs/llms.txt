@@ -1,0 +1,53 @@
+# krateo-codegen-agents — LLM doc index
+
+> krateo-codegen-agents packages four **cross-cutting** Krateo codegen/IaC specialist agents
+> (kagent). Unlike the per-component agents, these are NOT tied to a deployed Krateo component —
+> they operate on arbitrary source: translating IaC (Ansible→operator, Terraform-provider→operator,
+> Terraform→Helm) and tracing/analysing code, grounding via the github MCP. Each is its own Helm
+> chart under `charts/`, federated on the `krateo-autopilot` orchestrator via `extraAgents` and
+> reachable only through it. This index is the agent entry point to this repo's docs.
+
+## How to use this index (agents)
+
+These docs describe a SPECIFIC released version of the codegen agents. Fetch every file below **at
+the agent chart's release tag** — i.e. the `braghettos/krateo-codegen-agents` repo tag that matches
+the deployed agent chart version — not `main`:
+
+- Resolve the deployed chart version off the cluster (`CompositionDefinition.spec.chart.version` for
+  the agent, or the agent chart `appVersion` == `CHART_VERSION` == the repo tag), then read this
+  repo's `docs/` at that tag.
+- These agents have **no separate code repo and own no CRDs**: this repo *is* both the chart and the
+  codebase. The "version-correct retrieval" of AGENTS-VERSIONING §10.2 collapses to one tag — this
+  repo's release tag.
+
+If something isn't in the docs, read the chart/source at that same tag — don't guess, and don't
+trust `main` for a deployed older version. Note the four agents version independently of each other
+(each `charts/<name>/Chart.yaml` carries its own pinned `version`).
+
+## Start here
+
+- [agents.md](agents.md): the four agents — what each one does, its inputs/outputs, and the github
+  MCP tools it uses. Read first to pick the right agent and understand its contract.
+
+## Output contract
+
+- [conventions.md](conventions.md): the Krateo OUTPUT conventions these agents must produce — the
+  CompositionDefinition + chart shape, `values.schema.json`, and the §-style chart standard the
+  generated artifacts have to satisfy so they install as Krateo compositions.
+
+## Reference
+
+- [README.md](../README.md): repo overview + the chart→agent table.
+- `charts/<name>/` — each agent's Helm chart: `templates/agent.yaml` (the `kagent.dev/v1alpha2`
+  Agent: model, tools, prompt wiring), `files/prompts-{eng,ita}.yaml` (the bilingual systemMessage),
+  `values.yaml` + `values.schema.json`, `compositiondefinition.yaml`. The prompts are the
+  authoritative behaviour spec for each agent.
+- [AGENTS-VERSIONING.md](https://github.com/braghettos/krateo-autopilot/blob/main/AGENTS-VERSIONING.md):
+  the standing standard these agents conform to (§7 packaging, §8 conformance, §9 prompt standard,
+  §10 docs standard).
+
+## Notes
+
+This repo's `docs/` is one shared set for all four agents (they share a codebase and conventions);
+it is versioned by this repo's tags. There is no `crds.md`/`wiring.md`/code-repo half — those exist
+for per-component agents that own a CRD and a runtime; codegen agents own neither.
