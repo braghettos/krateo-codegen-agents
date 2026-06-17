@@ -3,8 +3,8 @@ name: krateo-code-analysis-agent
 description: >-
   Traces Krateo components to their GitHub source repositories, searches code for error patterns, reads source files, and checks recent commits for regressions.
 type: application
-version: 0.1.0
-appVersion: 0.1.0
+version: 0.1.1
+appVersion: CHART_VERSION
 home: https://krateo.io
 icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg
 keywords:
