@@ -9,9 +9,9 @@ metadata:
 spec:
   type: Declarative
   description: >-
-    Reads the official Krateo documentation from GitHub, reconciles it with the braghettos fork's
-    specifics, and keeps the autopilot's grounding source (krateo-autopilot docs/llms.txt) current
-    by opening a pull request — never a direct commit.
+    Answers overall-platform and general Krateo questions (what Krateo is, how the pieces fit,
+    architecture, install model) grounded in a baked platform overview and live cluster reads.
+    Domain-specific questions belong to the component agents, which own their own docs.
   declarative:
     deployment:
       env:
@@ -26,22 +26,17 @@ spec:
     systemMessage: |
       {{`{{include "prompts/docs_agent"}}`}}
     tools:
-{{- if .Values.github.enabled }}
+{{- if .Values.clusterReads.enabled }}
+      # Read-only cluster inspection, to answer "what's running / how is the platform" live.
       - type: McpServer
         mcpServer:
-          name: {{ .Values.github.mcpServer }}
+          name: {{ .Values.clusterReads.mcpServer }}
           kind: RemoteMCPServer
           apiGroup: kagent.dev
           toolNames:
-            # read — discover + read the source docs and the current grounding file
-            - get_file_contents
-            - search_code
-            - search_repositories
-            - list_commits
-            # write — propose the update as a PR (open a branch + PR; never push to a default branch)
-            - create_branch
-            - create_or_update_file
-            - create_pull_request
+            - k8s_get_resources
+            - k8s_describe_resource
+            - k8s_get_available_api_resources
 {{- end }}
     deployment:
       resources:
