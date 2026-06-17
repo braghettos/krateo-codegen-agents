@@ -79,7 +79,15 @@
         }
       }
     },
-    "github": {
+    "resources": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "global": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "clusterReads": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -90,14 +98,6 @@
           "type": "string"
         }
       }
-    },
-    "resources": {
-      "type": "object",
-      "additionalProperties": true
-    },
-    "global": {
-      "type": "object",
-      "additionalProperties": true
     }
   }
 }

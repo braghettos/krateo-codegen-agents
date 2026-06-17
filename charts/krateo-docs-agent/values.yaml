@@ -18,9 +18,12 @@ vertexAI:
   enabled: true
   projectID: ""
   location: us-central1
-github:
+# Read-only cluster inspection (the official kagent tool server), so the agent can answer
+# "what's running / how is the platform" against live state. No github MCP, no token: the
+# platform overview is baked into the prompt (version-pinned with the chart).
+clusterReads:
   enabled: true
-  mcpServer: github-mcp-server
+  mcpServer: kagent-tool-server
 resources:
   requests:
     cpu: 100m
