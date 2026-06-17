@@ -21,6 +21,9 @@ vertexAI:
 # Read-only cluster inspection (the official kagent tool server), so the agent can answer
 # "what's running / how is the platform" against live state. No github MCP, no token: the
 # platform overview is baked into the prompt (version-pinned with the chart).
+fetch:
+  enabled: true
+  mcpServer: fetch-mcp-server
 clusterReads:
   enabled: true
   mcpServer: kagent-tool-server

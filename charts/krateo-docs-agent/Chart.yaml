@@ -5,7 +5,7 @@ description: >-
   specifics, and keeps the autopilot's grounding source (krateo-autopilot docs/llms.txt) current by
   opening a pull request — never a direct commit.
 type: application
-version: 0.1.1
+version: 0.1.2
 appVersion: CHART_VERSION
 home: https://krateo.io
 icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg

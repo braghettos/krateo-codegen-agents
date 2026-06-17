@@ -38,6 +38,17 @@ spec:
             - k8s_describe_resource
             - k8s_get_available_api_resources
 {{- end }}
+{{- if .Values.fetch.enabled }}
+      # Tokenless doc reading: GET any public docs/llms.txt URL -> markdown, for deeper/cross-component
+      # platform questions on demand (the baked overview is the primary grounding).
+      - type: McpServer
+        mcpServer:
+          name: {{ .Values.fetch.mcpServer }}
+          kind: MCPServer
+          apiGroup: kagent.dev
+          toolNames:
+            - fetch
+{{- end }}
     deployment:
       resources:
 {{- toYaml .Values.resources | nindent 8 }}

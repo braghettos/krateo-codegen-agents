@@ -98,6 +98,10 @@
           "type": "string"
         }
       }
+    },
+    "fetch": {
+      "type": "object",
+      "additionalProperties": true
     }
   }
 }
