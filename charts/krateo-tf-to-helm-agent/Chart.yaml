@@ -3,7 +3,7 @@ name: krateo-tf-to-helm-agent
 description: >-
   Translates Terraform configurations into Helm charts.
 type: application
-version: 0.1.3
+version: 0.1.4
 appVersion: CHART_VERSION
 home: https://krateo.io
 icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg
