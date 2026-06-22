@@ -6,7 +6,7 @@ type: application
 version: 0.1.4
 appVersion: CHART_VERSION
 home: https://krateo.io
-icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg
+icon: https://raw.githubusercontent.com/krateoplatformops/krateo/main/docs/media/logo.svg
 keywords:
   - krateo
   - platformops
@@ -17,3 +17,8 @@ keywords:
   - helm
 sources:
   - https://github.com/braghettos/krateo-codegen-agents/tree/SOURCE_REF
+annotations:
+  krateo.io/category: generator
+  krateo.io/maturity: beta
+  krateo.io/display-name: Terraform to Helm Agent
+  krateoSupportedVersion: ">= 2.5.1"
